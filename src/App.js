@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { createContext, useState } from "react";
+import Images from "./components/Images";
+import Store from "./components/userstor";
+import SearchField from "./components/SearchField";
+import useAxios from "./components/useAxios";
+
+// Create Context
+export const ImageContext = createContext();
 
 function App() {
+  const [searchImage, setSearchImage] = useState('');
+  const { response, isLoading, error, fetchData } = useAxios(`search/photos?page=1&query=birds&client_id=${process.env.REACT_APP_ACCESS_KEY}`);
+
+  const value = {
+    response,
+    isLoading,
+    error,
+    fetchData,
+    searchImage,
+    setSearchImage
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ImageContext.Provider value={value}>
+      <Store>
+        <SearchField />
+      </Store>
+      <Images />
+    </ImageContext.Provider>
   );
 }
 
