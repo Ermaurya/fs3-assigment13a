@@ -7,4 +7,4 @@ const DataMap = ({ item }) => {
   ))
 }
 
-export default DataMap
+export default DataMap;
